@@ -1,2 +1,2 @@
 # tiny-grep
-Porting and extending a rudimentary regexp parser and matcher from Java to C++.
+Porting and extending my rudimentary regexp parser and matcher from Java to C++.
