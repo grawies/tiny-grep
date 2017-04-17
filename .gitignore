@@ -1,3 +1,17 @@
+
+# ================= #
+# Project structure #
+# ----------------- #
+# library files
+lib/*
+# build artifacts and executables
+build
+bin
+
+# ================= #
+#        C++        #
+# ----------------- #
+
 # Compiled Object files
 *.slo
 *.lo
