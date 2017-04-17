@@ -2,7 +2,6 @@
 
 #include <cxxtest/TestSuite.h>
 
-#include "count_if_followed_by.h"
 #include "linkedqueue/Queue.h"
 #include "parser.h"
 #include "resyntax/resyntax.h"
