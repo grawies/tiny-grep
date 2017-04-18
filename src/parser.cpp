@@ -9,7 +9,7 @@
 namespace tinygrep {
 
 // Find end of parenthesis subexpr in string:
-// returns index s.t. [start_index, index) includes both parenthesis.
+// returns index s.t. [start_index, index) includes both parentheses.
 std::size_t find_matching_parenthesis(const std::string& s, std::size_t start_index) {
   std::size_t index = start_index + 1;
   int unmatched_left_parens = 1;
