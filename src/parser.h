@@ -11,6 +11,6 @@ namespace tinygrep {
 
 resyntax::RegExp parse(std::string s);
 
-}
+}  // namespace tinygrep
 
 #endif // TINYGREP_PARSER_H_

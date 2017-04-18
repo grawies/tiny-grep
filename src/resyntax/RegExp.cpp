@@ -1,5 +1,7 @@
 #include "RegExp.h"
 
+namespace tinygrep {
+
 namespace resyntax {
 
 RegExp::RegExp() : RegExp::RegExp(RegExpEnum::kEmpty) {}
@@ -79,4 +81,6 @@ void RegExp::copy_state(const RegExp& r) {
     r2_ = new RegExp(*r.r2_);
 }
 
-}
+}  // namespace resyntax
+
+}  // namespace tinygrep

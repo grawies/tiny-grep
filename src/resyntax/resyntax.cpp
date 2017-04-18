@@ -2,6 +2,8 @@
 
 #include "RegExp.h"
 
+namespace tinygrep {
+
 namespace resyntax {
 
 RegExp createClosure(RegExp r) {
@@ -33,4 +35,6 @@ RegExp createZeroOrOne(RegExp r) {
   return RegExp(RegExpEnum::kZeroOrOne, r);
 }
 
-}
+}  // namespace resyntax
+
+}  // namespace tinygrep

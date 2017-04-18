@@ -1,6 +1,8 @@
 #ifndef TINYGREP_RESYNTAX_REGEXP_H_
 #define TINYGREP_RESYNTAX_REGEXP_H_
 
+namespace tinygrep {
+
 namespace resyntax {
 
 enum class RegExpEnum {
@@ -44,6 +46,8 @@ class RegExp {
   void copy_state(const RegExp& r);
 };
 
-}
+}  // namespace resyntax
+
+}  // namespace tinygrep
 
 #endif // TINYGREP_RESYNTAX_REGEXP_H

@@ -28,10 +28,10 @@ class MyTestSuite : public CxxTest::TestSuite {
 
     void test2() {
       std::string regexp = "(a|b)*c";
-      resyntax::RegExp ast = tinygrep::parse(regexp);
-      TS_ASSERT_EQUALS(ast.getType(), resyntax::RegExpEnum::kConcatenation);
-      resyntax::RegExp a_or_b_star = ast.getR1();
-      resyntax::RegExp c = ast.getR2();
-      TS_ASSERT_EQUALS(a_or_b_star.getR1().getR2().getType(), resyntax::RegExpEnum::kLiteral);
+      tinygrep::resyntax::RegExp ast = tinygrep::parse(regexp);
+      TS_ASSERT_EQUALS(ast.getType(), tinygrep::resyntax::RegExpEnum::kConcatenation);
+      tinygrep::resyntax::RegExp a_or_b_star = ast.getR1();
+      tinygrep::resyntax::RegExp c = ast.getR2();
+      TS_ASSERT_EQUALS(a_or_b_star.getR1().getR2().getType(), tinygrep::resyntax::RegExpEnum::kLiteral);
     }
 };

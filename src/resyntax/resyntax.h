@@ -3,6 +3,8 @@
 
 #include "RegExp.h"
 
+namespace tinygrep {
+
 namespace resyntax {
 
 RegExp createClosure(RegExp r);
@@ -13,6 +15,8 @@ RegExp createOneOrMore(RegExp r);
 RegExp createUnion(RegExp r1, RegExp r2);
 RegExp createZeroOrOne(RegExp r);
 
-}
+}  // namespace resyntax
+
+}  // namespace tinygrep
 
 #endif //  TINYGREP_RESYNTAX_RESYNTAX_

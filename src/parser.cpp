@@ -43,4 +43,4 @@ resyntax::RegExp parse(std::string s) {
   return tree;
 }
 
-}
+}  // namespace tinygrep
