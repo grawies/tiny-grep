@@ -1,12 +1,33 @@
 #include "parser.h"
 
+#include <cstddef>
+#include <stdexcept>
 #include <string>
 
 #include "resyntax/resyntax.h"
 
 namespace tinygrep {
 
-resyntax::RegExp parse(std::string s) {
+// Find end of parenthesis subexpr in string:
+// returns index s.t. [start_index, index) includes both parenthesis.
+std::size_t find_matching_parenthesis(const std::string& s, std::size_t start_index) {
+  std::size_t index = start_index + 1;
+  int unmatched_left_parens = 1;
+  for (auto it = s.begin() + index; it < s.end() && unmatched_left_parens > 0; ++it, ++index) {
+    if (*it == '(') {
+      ++unmatched_left_parens;
+    } else if (*it == ')') {
+      --unmatched_left_parens;
+    }
+  }
+  if (unmatched_left_parens != 0) {
+    throw std::domain_error("String is not in the supported grammar: unmatched parenthesis.");
+  }
+  return index;
+}
+
+resyntax::RegExp parse(const std::string s) {
+  // TODO: Validate s: check if it belongs to the grammar.
   // TODO: Implement the parsing function based on the pseudocode.
 
   //  init UNION-list
