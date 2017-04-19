@@ -27,7 +27,9 @@ RegExp::RegExp(RegExp const& r) : RegExp::RegExp() {
 RegExp::RegExp(RegExp&& r) : RegExp::RegExp(r.type_, r.literal_) {
   r1_ = r.r1_;
   r2_ = r.r2_;
-  r.clear_state();
+  r.type_ = RegExpEnum::kEmpty;
+  r.literal_ = '0';
+  r.r1_ = r.r2_ = nullptr;
 }
 
 RegExp::~RegExp() {
@@ -67,14 +69,14 @@ void RegExp::clear_state() {
   type_ = RegExpEnum::kEmpty;
   literal_ = '\0';
   delete r1_;
-  r1_ = nullptr;
   delete r2_;
-  r2_ = nullptr;
+  r1_ = r2_ = nullptr;
 }
 
 void RegExp::copy_state(const RegExp& r) {
   type_ = r.type_;
   literal_ = r.literal_;
+  r1_ = r2_ = nullptr;
   if (r.r1_)
     r1_ = new RegExp(*r.r1_);
   if (r.r2_)
