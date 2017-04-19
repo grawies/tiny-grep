@@ -9,6 +9,10 @@
 
 namespace tinygrep {
 
+void throw_unsupported_grammar_exception() {
+  throw std::domain_error("String is not in the supported grammar: unmatched parenthesis.");
+}
+
 // Find end of parenthesis subexpr in string:
 // returns index s.t. [start_index, index) includes both parentheses.
 std::size_t find_matching_parenthesis(const std::string& s, std::size_t start_index) {
@@ -22,55 +26,80 @@ std::size_t find_matching_parenthesis(const std::string& s, std::size_t start_in
     }
   }
   if (unmatched_left_parens != 0) {
-    throw std::domain_error("String is not in the supported grammar: unmatched parenthesis.");
+    throw_unsupported_grammar_exception();
   }
   return index;
 }
 
+// Join the regexes in the list with the provided (assumed associative) operator regex.
+// Note: Empties the provided vector.
+resyntax::RegExp join_regexes(std::vector<resyntax::RegExp>& regex_list, resyntax::RegExpEnum operation) {
+  if (regex_list.empty()) {
+    return resyntax::RegExp();
+  }
+  resyntax::RegExp join = regex_list.back();
+  regex_list.pop_back();
+  while (!regex_list.empty()) {
+    join = resyntax::RegExp(operation, regex_list.back(), join);
+    regex_list.pop_back();
+  }
+  return join;
+}
+
+void verify_nonempty(std::vector<resyntax::RegExp>& list) {
+  if (list.empty()) {
+    throw_unsupported_grammar_exception();
+  }
+}
 
 // Parse the sub-string s[start_index, end_index) to a RegExp AST.
-resyntax::RegExp parse_subexpression(const std::string& s, int start_index, int end_index) {
-  // TODO: Implement the parsing function based on the pseudocode.
-  //  init UNION-list
-  //  init CONCAT-list
-  //  while charstream is nonempty:
-  //    c <- next char
-  //    if c == ( :
-  //      subexpr <- find subexpr
-  //      CONCAT.append: recurse(subexpr)
-  //    if c == . :
-  //      CONCAT.append: DOT
-  //    if c == literal :
-  //      CONCAT.append: LITERAL(c)
-  //    if c in {+,?,*} :
-  //      CONCAT.top.modifywith(c)
-  //    if c == | :
-  //      cct <- CONCAT.CONCATENATEALL
-  //      UNION.append: cct
-  //      init CONCAT-list anew
-  //    else
-  //      throw a_fit
-  //  cct <- CONCAT.CONCATENATEALL
-  //  UNION.append: cct
-  //  regexp <- UNION.UNITEALL
-  //  return regexp
-  return resyntax::RegExp();
+resyntax::RegExp parse_subexpression(const std::string& s, std::size_t start_index, std::size_t end_index) {
+  std::vector<resyntax::RegExp> union_list;
+  std::vector<resyntax::RegExp> concat_list;
+  std::size_t index = start_index;
+  while (index < end_index) {
+    char token = s[index];
+    std::size_t next_index = index + 1;
+    switch (token) {
+      case '(':
+        next_index = find_matching_parenthesis(s, index);
+        concat_list.push_back(parse_subexpression(s, index + 1, next_index - 1));
+        break;
+      case '+':
+        verify_nonempty(concat_list);
+        concat_list.back() = resyntax::RegExp(resyntax::RegExpEnum::kOneOrMore, concat_list.back());
+        break;
+      case '?':
+        verify_nonempty(concat_list);
+        concat_list.back() = resyntax::RegExp(resyntax::RegExpEnum::kZeroOrOne, concat_list.back());
+        break;
+      case '*':
+        verify_nonempty(concat_list);
+        concat_list.back() = resyntax::RegExp(resyntax::RegExpEnum::kClosure, concat_list.back());
+        break;
+      case '|':
+        union_list.push_back(join_regexes(concat_list, resyntax::RegExpEnum::kConcatenation));
+        concat_list.clear();
+        break;
+      case '.':
+        concat_list.push_back(resyntax::RegExp(resyntax::RegExpEnum::kDot));
+        break;
+      default:
+        concat_list.push_back(resyntax::RegExp(resyntax::RegExpEnum::kLiteral, token));
+        break;
+    }
+    index = next_index;
+  }
+  if (union_list.empty() && concat_list.empty()) {
+    return resyntax::RegExp();
+  }
+  union_list.push_back(join_regexes(concat_list, resyntax::RegExpEnum::kConcatenation));
+  return join_regexes(union_list, resyntax::RegExpEnum::kUnion);
 }
 
 resyntax::RegExp parse(const std::string s) {
   // TODO: Validate s: check if it belongs to the grammar.
-/*
   return parse_subexpression(s, 0, s.length());
-}
-*/
-  // This is a temporary placeholder construction for verifying that testing is functional.
-  resyntax::RegExp a = resyntax::createLiteral('a');
-  resyntax::RegExp b = resyntax::createLiteral('b');
-  resyntax::RegExp c = resyntax::createLiteral('c');
-  resyntax::RegExp a_or_b = resyntax::createUnion(a, b);
-  resyntax::RegExp a_or_b_star = resyntax::createClosure(a_or_b);
-  resyntax::RegExp tree = resyntax::createConcatenation(a_or_b_star, c);
-  return tree;
 }
 
 }  // namespace tinygrep
