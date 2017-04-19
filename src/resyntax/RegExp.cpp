@@ -12,11 +12,11 @@ RegExp::RegExp(RegExpEnum type, literalType literal) : RegExp::RegExp(type) {
   literal_ = literal;
 }
 
-RegExp::RegExp(RegExpEnum type, RegExp r1) : RegExp::RegExp(type) {
+RegExp::RegExp(RegExpEnum type, const RegExp& r1) : RegExp::RegExp(type) {
   r1_ = new RegExp(r1);
 }
 
-RegExp::RegExp(RegExpEnum type, RegExp r1, RegExp r2) : RegExp::RegExp(type, r1) {
+RegExp::RegExp(RegExpEnum type, const RegExp& r1, const RegExp& r2) : RegExp::RegExp(type, r1) {
   r2_ = new RegExp(r2);
 }
 

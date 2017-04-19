@@ -23,8 +23,8 @@ class RegExp {
   RegExp();
   explicit RegExp(RegExpEnum type);
   RegExp(RegExpEnum type, literalType literal);
-  RegExp(RegExpEnum type, RegExp r1);
-  RegExp(RegExpEnum type, RegExp r1, RegExp r2);
+  RegExp(RegExpEnum type, const RegExp& r1);
+  RegExp(RegExpEnum type, const RegExp& r1, const RegExp& r2);
   RegExp(const RegExp& r);
   RegExp(RegExp&& r);
 
