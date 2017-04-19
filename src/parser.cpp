@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 #include "resyntax/resyntax.h"
 
@@ -26,10 +27,10 @@ std::size_t find_matching_parenthesis(const std::string& s, std::size_t start_in
   return index;
 }
 
-resyntax::RegExp parse(const std::string s) {
-  // TODO: Validate s: check if it belongs to the grammar.
-  // TODO: Implement the parsing function based on the pseudocode.
 
+// Parse the sub-string s[start_index, end_index) to a RegExp AST.
+resyntax::RegExp parse_subexpression(const std::string& s, int start_index, int end_index) {
+  // TODO: Implement the parsing function based on the pseudocode.
   //  init UNION-list
   //  init CONCAT-list
   //  while charstream is nonempty:
@@ -53,7 +54,15 @@ resyntax::RegExp parse(const std::string s) {
   //  UNION.append: cct
   //  regexp <- UNION.UNITEALL
   //  return regexp
+  return resyntax::RegExp();
+}
 
+resyntax::RegExp parse(const std::string s) {
+  // TODO: Validate s: check if it belongs to the grammar.
+/*
+  return parse_subexpression(s, 0, s.length());
+}
+*/
   // This is a temporary placeholder construction for verifying that testing is functional.
   resyntax::RegExp a = resyntax::createLiteral('a');
   resyntax::RegExp b = resyntax::createLiteral('b');
