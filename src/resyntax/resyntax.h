@@ -20,4 +20,4 @@ RegExp createZeroOrOne(RegExp r);
 
 }  // namespace tinygrep
 
-#endif //  TINYGREP_RESYNTAX_RESYNTAX_
+#endif // TINYGREP_RESYNTAX_RESYNTAX_
