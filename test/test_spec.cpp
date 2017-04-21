@@ -1,3 +1,4 @@
+#include <fstream>
 #include <string>
 
 #include <cxxtest/TestSuite.h>
@@ -33,5 +34,15 @@ class MyTestSuite : public CxxTest::TestSuite {
       tinygrep::resyntax::RegExp a_or_b_star = ast.getR1();
       tinygrep::resyntax::RegExp c = ast.getR2();
       TS_ASSERT_EQUALS(a_or_b_star.getR1().getR2().getType(), tinygrep::resyntax::RegExpEnum::kLiteral);
+    }
+
+    void test3() {
+      std::string regexp = "(a|b)*c";
+      tinygrep::resyntax::RegExp ast = tinygrep::parse(regexp);
+      std::string regexp_test_graph = tinygrep::resyntax::to_graph(ast);
+      std::ofstream os("build/test3_graph.gv");
+      if (os.is_open()) {
+        os << regexp_test_graph;
+      }
     }
 };

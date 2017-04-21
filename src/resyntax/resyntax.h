@@ -1,6 +1,7 @@
 #ifndef TINYGREP_RESYNTAX_RESYNTAX_
 #define TINYGREP_RESYNTAX_RESYNTAX_
 
+#include "graph.h"
 #include "RegExp.h"
 
 namespace tinygrep {
