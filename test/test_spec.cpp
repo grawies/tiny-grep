@@ -52,6 +52,12 @@ class MyTestSuite : public CxxTest::TestSuite {
       TS_ASSERT(!enfautomaton.accepts("abbaabababab"));
       TS_ASSERT(!enfautomaton.accepts("acc"));
       TS_ASSERT(!enfautomaton.accepts(""));
+
+      std::string enfa_test_graph = enfautomaton.to_graph();
+      std::ofstream os_enfa("build/test_enfautomaton_graph.gv");
+      if (os_enfa.is_open()) {
+        os_enfa << enfa_test_graph;
+      }
     }
 
 };
