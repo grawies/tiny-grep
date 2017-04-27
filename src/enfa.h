@@ -19,6 +19,8 @@ class EpsilonNFA {
 
   bool accepts(const std::string& s) const;
 
+  std::string to_graph() const;
+
  private:
   std::string alphabet_;
   std::size_t state_count_;
