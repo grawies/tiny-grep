@@ -117,7 +117,7 @@ bool EpsilonNFA::accepts(const std::string& s) const {
     }
     current_states = epsilon_closure(next_states, epsilon_transitions_);
   }
-  return current_states.find(accept_state_) == current_states.end();
+  return current_states.find(accept_state_) != current_states.end();
 }
 
 }  // namespace enfa
