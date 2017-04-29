@@ -11,12 +11,13 @@ INCLUDE       := -Iinclude/
 INCLUDE_TEST  := -I$(SRCDIR)/ -I$(LIBDIR)/cxxtest/
 CXXTESTGENPY  := $(LIBDIR)/cxxtest/cxxtestgen.py
 
-SOURCE_FILES  := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
+APP_FILE      := application.cpp
+SOURCE_FILES  := $(shell find $(SRCDIR) ! -name $(APP_FILE) -type f -name *.$(SRCEXT))
 OBJECT_FILES  := $(patsubst $(SRCDIR)/%, $(BUILDDIR)/%, $(SOURCE_FILES:.$(SRCEXT)=.o))
 TEST_SPEC     := $(BUILDDIR)/$(TESTDIR)/test_spec.cpp
 FOOFOO := count_if_followed_by
 
-.PHONY: obj_dirs build test runtest clean all
+.PHONY: obj_dirs build app test runtest clean all
 
 obj_dirs:
 	mkdir -p $(foreach DIR, $(OBJECT_FILES), $(dir $(DIR)))
@@ -29,6 +30,11 @@ build: obj_dirs $(OBJECT_FILES)
 $(BUILDDIR)/test/%: $(TESTDIR)/%
 	mkdir -p build
 	cp --parents $(TESTDIR)/test_spec.cpp $(BUILDDIR)
+
+app: build
+	@echo " Building application endpoint..."
+	$(CC) $(CCFLAGS) $(INCLUDE) $(INCLUDE_APP) -o $(BINDIR)/tinygrep \
+          $(SRCDIR)/$(APP_FILE) $(OBJECT_FILES)
 
 test: build $(TEST_SPEC)
 	@echo " Building tests..."
@@ -51,4 +57,4 @@ clean:
 	@echo " Cleaning..."
 	rm -rf $(BUILDDIR) $(BINDIR)
 
-all: clean runtest
+all: clean runtest app
