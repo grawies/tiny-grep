@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include "parser.h"
 #include "resyntax/RegExp.h"
 
 namespace tinygrep {
@@ -17,6 +18,8 @@ EpsilonNFA::EpsilonNFA(resyntax::RegExp re) {
   start_state_ = sp.start;
   accept_state_ = sp.accept;
 }
+
+EpsilonNFA::EpsilonNFA(std::string re) : EpsilonNFA::EpsilonNFA(parse(re)) {}
 
 EpsilonNFA::StatePair EpsilonNFA::make_enfa(const resyntax::RegExp& re) {
   StatePair returnPair(0, 0);

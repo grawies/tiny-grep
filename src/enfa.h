@@ -16,6 +16,7 @@ class EpsilonNFA {
   typedef std::size_t state_type;
   
   explicit EpsilonNFA(resyntax::RegExp re);
+  explicit EpsilonNFA(std::string re);
 
   bool accepts(const std::string& s) const;
 
