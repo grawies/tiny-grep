@@ -1,0 +1,17 @@
++-_ abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
+(m )|( (t|n))|b
++_the phantom menace
++_attack of the clones
++_revenge of the sith
++_a new hope
++_the empire strikes back
++_return of the jedi
+-_the wrath of khan
+-_the search for spock
+-_the voyage home
+-_the final frontier
+-_the undiscovered country
+-_generations
+-_first contact
+-_insurrection
+-_nemesis
