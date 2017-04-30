@@ -1,5 +1,7 @@
 #include <fstream>
+#include <iostream>
 #include <string>
+#include <limits>
 
 #include <cxxtest/TestSuite.h>
 
@@ -42,7 +44,7 @@ class MyTestSuite : public CxxTest::TestSuite {
       if (os_regexp.is_open()) {
         os_regexp << regexp_test_graph;
       }
-      // Generate EpsilonNFA from AST.
+      os_regexp.close(); // Generate EpsilonNFA from AST.
       tinygrep::enfa::EpsilonNFA enfautomaton = tinygrep::enfa::EpsilonNFA(ast);
       TS_ASSERT(enfautomaton.accepts("abbaaababc"));
       TS_ASSERT(enfautomaton.accepts("abc"));
@@ -57,6 +59,40 @@ class MyTestSuite : public CxxTest::TestSuite {
       std::ofstream os_enfa("build/test_enfautomaton_graph.gv");
       if (os_enfa.is_open()) {
         os_enfa << enfa_test_graph;
+      }
+      os_enfa.close();
+    }
+
+    void runtestcase(std::string filepath) {
+      std::ifstream testcase(filepath);
+      bool testcase_file_available = testcase.is_open();
+      TS_ASSERT(testcase_file_available);
+      if (!testcase_file_available) {
+        return;
+      }
+      // Ignore alphabet.
+      testcase.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      // Read regex, create automaton.
+      std::string regex;
+      std::getline(testcase, regex);
+      tinygrep::enfa::EpsilonNFA enfa(".*(" + regex + ").*");
+      // Run searches.
+      std::string search_line;
+      while (getline(testcase, search_line)) {
+        bool accept_flag = search_line[0] == '+'
+                        || (search_line[0] != '-' && search_line.rfind("/\\") == std::string::npos);
+        TS_ASSERT(enfa.accepts(search_line) == accept_flag);
+      }
+      testcase.close();
+    }
+     
+    void test3() {
+      std::string testcase_prefix("testcase"),
+                  testcase_postfix(".txt"),
+                  testcase_path("test/manual-testcases/");
+      std::vector<std::string> testcase_indices = {"1","2","4","5","10","11"};
+      for (std::string testcase_id : testcase_indices) {
+        runtestcase(testcase_path + testcase_prefix + testcase_id + testcase_postfix);
       }
     }
 
