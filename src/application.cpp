@@ -16,7 +16,7 @@ int main(int argc, char* argv[]) {
   std::string regex = argv[1];
   unsigned int matches = 0;
   try {
-    tinygrep::enfa::EpsilonNFA enfa("("+regex+")*");
+    tinygrep::enfa::EpsilonNFA enfa(".*(" + regex + ").*");
     // while there is stdin, search in stdin
     std::string search_line;
     while (std::getline(std::cin, search_line)) {
