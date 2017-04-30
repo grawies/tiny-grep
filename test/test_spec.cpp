@@ -5,7 +5,6 @@
 
 #include <cxxtest/TestSuite.h>
 
-#include "linkedqueue/Queue.h"
 #include "enfa.h"
 #include "parser.h"
 #include "resyntax/resyntax.h"
@@ -13,24 +12,6 @@
 class MyTestSuite : public CxxTest::TestSuite {
   public:
     void test1() {
-      linkedqueue::Queue<int> q;
-      if (q.is_empty()) {
-        q.enqueue(3);
-        q.enqueue(4);
-        q.enqueue(5);
-      }
-      TS_ASSERT_EQUALS(q.size(), 3);
-      if (!q.is_empty()) {
-        int a = q.pop();
-        q.enqueue(a);
-      }
-      TS_ASSERT_EQUALS(q.pop(), 4);
-      TS_ASSERT_EQUALS(q.peek(), 5);
-      TS_ASSERT_EQUALS(q.size(), 2);
-      TS_ASSERT_EQUALS(q.is_empty(), false);
-    }
-
-    void test2() {
       std::string regexp = "(a|b)*c";
       // Parse a string to a RegExp AST.
       tinygrep::resyntax::RegExp ast = tinygrep::parse(regexp);
@@ -86,7 +67,7 @@ class MyTestSuite : public CxxTest::TestSuite {
       testcase.close();
     }
      
-    void test3() {
+    void test2() {
       std::string testcase_prefix("testcase"),
                   testcase_postfix(".txt"),
                   testcase_path("test/manual-testcases/");
