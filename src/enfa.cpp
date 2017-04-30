@@ -22,23 +22,23 @@ EpsilonNFA::EpsilonNFA(resyntax::RegExp re) {
 EpsilonNFA::EpsilonNFA(std::string re) : EpsilonNFA::EpsilonNFA(parse(re)) {}
 
 EpsilonNFA::StatePair EpsilonNFA::make_enfa(const resyntax::RegExp& re) {
-  StatePair returnPair(0, 0);
+  state_type new_start = increment_state(), new_accept = increment_state();
   switch(re.getType()) {
     case resyntax::RegExpEnum::kEmpty:
     { // accept anything
-      state_type s = increment_state(), a = s;
-      returnPair = StatePair(s,a);
+      epsilon_transitions_[new_start].push_back(new_accept);
       break;
     }
     case resyntax::RegExpEnum::kLiteral:
     case resyntax::RegExpEnum::kDot:
     { // literal transition from start to end
-      state_type s = increment_state(), a = increment_state();
       Transition t;
-      t.target = a;
+      t.target = new_accept;
       t.literal = re.getLiteral();
-      literal_transitions_[s].push_back(t);
-      returnPair = StatePair(s, a);
+      if (re.getType() == resyntax::RegExpEnum::kDot) {
+        t.literal = '.';
+      }
+      literal_transitions_[new_start].push_back(t);
       break;
     }
     case resyntax::RegExpEnum::kOneOrMore:
@@ -46,38 +46,41 @@ EpsilonNFA::StatePair EpsilonNFA::make_enfa(const resyntax::RegExp& re) {
     case resyntax::RegExpEnum::kClosure:
     { // loop back and loop forward transitions
       StatePair sp = make_enfa(re.getR1());
+      epsilon_transitions_[new_start].push_back(sp.start);
+      epsilon_transitions_[sp.accept].push_back(new_accept);
       // OneOrMore and Closure allows repeated occurrences.
       if (re.getType() != resyntax::RegExpEnum::kZeroOrOne) {
-        epsilon_transitions_[sp.accept].push_back(sp.start);
+        epsilon_transitions_[new_accept].push_back(new_start);
       }
       // ZeroOrOne and Closure allows zero occurrences.
       if (re.getType() != resyntax::RegExpEnum::kOneOrMore) {
-        epsilon_transitions_[sp.start].push_back(sp.accept);
+        epsilon_transitions_[new_start].push_back(new_accept);
       }
-      returnPair = sp;
       break;
     }
     case resyntax::RegExpEnum::kConcatenation:
     { // serial chain sub-automata
       StatePair sp1 = make_enfa(re.getR1());
       StatePair sp2 = make_enfa(re.getR2());
+      epsilon_transitions_[new_start].push_back(sp1.start);
       epsilon_transitions_[sp1.accept].push_back(sp2.start);
-      returnPair = StatePair(sp1.start, sp2.accept);
+      epsilon_transitions_[sp2.accept].push_back(new_accept);
       break;
     }
     case resyntax::RegExpEnum::kUnion:
     { // parallel chain sub-automata
       StatePair sp1 = make_enfa(re.getR1());
       StatePair sp2 = make_enfa(re.getR2());
-      epsilon_transitions_[sp1.start].push_back(sp2.start);
-      epsilon_transitions_[sp2.accept].push_back(sp1.accept);
-      returnPair = sp1;
+      epsilon_transitions_[new_start].push_back(sp1.start);
+      epsilon_transitions_[new_start].push_back(sp2.start);
+      epsilon_transitions_[sp1.accept].push_back(new_accept);
+      epsilon_transitions_[sp2.accept].push_back(new_accept);
       break;
     }
     default:
       ; // Unreachable code.
   }
-  return returnPair;
+  return StatePair(new_start, new_accept);
 }
 
 EpsilonNFA::state_type EpsilonNFA::increment_state() {
