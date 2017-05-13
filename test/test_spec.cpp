@@ -14,19 +14,19 @@ class MyTestSuite : public CxxTest::TestSuite {
     void test1() {
       std::string regexp = "(a|b)*c";
       // Parse a string to a RegExp AST.
-      tinygrep::resyntax::RegExp ast = tinygrep::parse(regexp);
+      auto ast = tinygrep::parse(regexp);
       TS_ASSERT_EQUALS(ast.getType(), tinygrep::resyntax::RegExpEnum::kConcatenation);
-      tinygrep::resyntax::RegExp a_or_b_star = ast.getR1();
-      tinygrep::resyntax::RegExp c = ast.getR2();
+      auto a_or_b_star = ast.getR1();
+      auto c = ast.getR2();
       TS_ASSERT_EQUALS(a_or_b_star.getR1().getR2().getType(), tinygrep::resyntax::RegExpEnum::kLiteral);
       // Create a graph representation.
-      std::string regexp_test_graph = tinygrep::resyntax::to_graph(ast);
+      auto regexp_test_graph = tinygrep::resyntax::to_graph(ast);
       std::ofstream os_regexp("build/test_regexp_graph.gv");
       if (os_regexp.is_open()) {
         os_regexp << regexp_test_graph;
       }
       os_regexp.close(); // Generate EpsilonNFA from AST.
-      tinygrep::enfa::EpsilonNFA enfautomaton = tinygrep::enfa::EpsilonNFA(ast);
+      auto enfautomaton = tinygrep::enfa::EpsilonNFA(ast);
       TS_ASSERT(enfautomaton.accepts("abbaaababc"));
       TS_ASSERT(enfautomaton.accepts("abc"));
       TS_ASSERT(enfautomaton.accepts("bac"));
@@ -36,7 +36,7 @@ class MyTestSuite : public CxxTest::TestSuite {
       TS_ASSERT(!enfautomaton.accepts("acc"));
       TS_ASSERT(!enfautomaton.accepts(""));
 
-      std::string enfa_test_graph = enfautomaton.to_graph();
+      auto enfa_test_graph = enfautomaton.to_graph();
       std::ofstream os_enfa("build/test_enfautomaton_graph.gv");
       if (os_enfa.is_open()) {
         os_enfa << enfa_test_graph;
