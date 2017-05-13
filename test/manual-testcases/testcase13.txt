@@ -1,11 +1,13 @@
 +-_ abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
-(m )|( (t|n))|b
+(m )|( (t|n|j|a|b))
 +_the phantom menace
 +_attack of the clones
 +_revenge of the sith
 +_a new hope
 +_the empire strikes back
 +_return of the jedi
++_the force awakens
++_the last jedi
 -_the wrath of khan
 -_the search for spock
 -_the voyage home
@@ -15,3 +17,4 @@
 -_first contact
 -_insurrection
 -_nemesis
+-_beyond
