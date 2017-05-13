@@ -1,0 +1,39 @@
+
+-- NOTES --
+Color parts of output:
+http://stackoverflow.com/questions/2616906/how-do-i-output-coloured-text-to-a-linux-terminal
+
+Git workflow guide:
+https://www.atlassian.com/git/tutorials/comparing-workflows#feature-branch-workflow
+
+Option parser:
+https://github.com/jarro2783/cxxopts
+
+
+
+-- TODO --
+
+# Bugs
+
+# Refactoring
+Use X_ptr abstraction in RegExp class
+Use X_ptr abstraction whenever appropriate, other than RegExp class
+
+# Missing Basic RegEx (BRE) functionality of grep:
+Bracket expressions: basic functionality
+Bracket expressions: range expressions
+Bracket expression: predefined classes
+Bracket expression: negation ^
+Anchoring: beginning ^ meta-character
+Anchoring: ending $ meta-character
+Escaping: The \ character/ 
+Repetition: {n} repeats n times
+Repetition: {n,} repeats at least n times
+EXTENSION: Repetition: {,m} repeats at most n times
+EXTENSION: Repetition: {,m} repeats at most n times
+EXTENSION: Back references and subexpressions
+
+# Misc
+Command line option support
+Locale clarification
+Colored output
