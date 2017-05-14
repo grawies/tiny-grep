@@ -16,8 +16,6 @@ https://github.com/jarro2783/cxxopts
 # Bugs
 
 # Refactoring
-Use X_ptr abstraction in RegExp class
-Use X_ptr abstraction whenever appropriate, other than RegExp class
 
 # Missing Basic RegEx (BRE) functionality of grep:
 Bracket expressions: basic functionality
