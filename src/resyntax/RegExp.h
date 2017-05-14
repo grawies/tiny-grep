@@ -28,13 +28,6 @@ class RegExp {
   RegExp(RegExpEnum type, literalType literal);
   RegExp(RegExpEnum type, const RegExp& r1);
   RegExp(RegExpEnum type, const RegExp& r1, const RegExp& r2);
-  RegExp(const RegExp& r) = default;
-  RegExp(RegExp&& r) = default;
-
-  ~RegExp() = default;
-
-  RegExp& operator= (const RegExp& r) = default;
-  RegExp& operator= (RegExp&& r) = default;
 
   RegExpEnum getType() const;
   const RegExp& getR1() const;
