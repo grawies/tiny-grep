@@ -13,11 +13,11 @@ RegExp::RegExp(RegExpEnum type, literalType literal) : RegExp::RegExp(type) {
 }
 
 RegExp::RegExp(RegExpEnum type, const RegExp& r1) : RegExp::RegExp(type) {
-  r1_ = SPtr(new RegExp(r1));
+  r1_ = std::make_shared<RegExp>(r1);
 }
 
 RegExp::RegExp(RegExpEnum type, const RegExp& r1, const RegExp& r2) : RegExp::RegExp(type, r1) {
-  r2_ = SPtr(new RegExp(r2));
+  r2_ = std::make_shared<RegExp>(r2);
 }
 
 RegExpEnum RegExp::getType() const {
