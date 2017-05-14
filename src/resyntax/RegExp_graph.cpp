@@ -1,32 +1,20 @@
-#include "graph.h"
+#include "RegExp.h"
 
 #include <cstddef>
 #include <sstream>
 #include <string>
 
-#include "RegExp.h"
-
 namespace tinygrep {
 
 namespace resyntax {
 
+const unsigned int DEFAULT_PNG_SIZE = 10;
 const std::string LABEL_BEGIN = " [label=\"",
                   LABEL_END   = "\"]",
                   EDGE_ARROW  = " -> ",
                   ENDLINE     = ";\n";
 
-std::string to_graph(const RegExp& re, const unsigned int png_size) {
-  std::stringstream output;
-  output << "digraph epsilon_nfa {\nrankdir=LR; size=\""
-                << png_size << "," << png_size << "\";\n"
-                << "node [shape = circle];\n";
-  std::stringstream nodes, edges;
-  generate_node_strings(re, nodes, edges);
-  output << nodes.str() << edges.str() << "}\n";
-  return output.str();
-}
-
-std::string to_string(RegExp re) {
+std::string to_string(const RegExp& re) {
   switch (re.getType()) {
     case RegExpEnum::kEmpty:
       return "$\\epsilon$";
@@ -77,6 +65,18 @@ unsigned int generate_node_strings(const RegExp& re, std::stringstream& nodes, s
       break;
   }
   return node_id;
+}
+
+std::string RegExp::to_graph() const {
+  const unsigned int png_size = DEFAULT_PNG_SIZE;
+  std::stringstream output;
+  output << "digraph epsilon_nfa {\nrankdir=LR; size=\""
+                << png_size << "," << png_size << "\";\n"
+                << "node [shape = circle];\n";
+  std::stringstream nodes, edges;
+  generate_node_strings(*this, nodes, edges, 0);
+  output << nodes.str() << edges.str() << "}\n";
+  return output.str();
 }
 
 }  // namespace resyntax

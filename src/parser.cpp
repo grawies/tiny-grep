@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "resyntax/resyntax.h"
+#include "resyntax/RegExp.h"
 
 namespace tinygrep {
 

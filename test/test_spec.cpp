@@ -7,7 +7,7 @@
 
 #include "enfa.h"
 #include "parser.h"
-#include "resyntax/resyntax.h"
+#include "resyntax/RegExp.h"
 
 class MyTestSuite : public CxxTest::TestSuite {
   public:
@@ -20,7 +20,7 @@ class MyTestSuite : public CxxTest::TestSuite {
       auto c = ast.getR2();
       TS_ASSERT_EQUALS(a_or_b_star.getR1().getR2().getType(), tinygrep::resyntax::RegExpEnum::kLiteral);
       // Create a graph representation.
-      auto regexp_test_graph = tinygrep::resyntax::to_graph(ast);
+      auto regexp_test_graph = ast.to_graph();
       std::ofstream os_regexp("build/test_regexp_graph.gv");
       if (os_regexp.is_open()) {
         os_regexp << regexp_test_graph;

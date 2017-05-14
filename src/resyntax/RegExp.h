@@ -2,6 +2,7 @@
 #define TINYGREP_RESYNTAX_REGEXP_H_
 
 #include <memory>
+#include <string>
 
 namespace tinygrep {
 
@@ -33,6 +34,8 @@ class RegExp {
   const RegExp& getR1() const;
   const RegExp& getR2() const;
   literalType getLiteral() const;
+
+  std::string to_graph() const;
 
  private:
   RegExpEnum type_;

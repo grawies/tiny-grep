@@ -4,7 +4,6 @@
 
 #include "enfa.h"
 #include "parser.h"
-#include "resyntax/resyntax.h"
 
 int main(int argc, char* argv[]) {
   if (argc != 2) {
