@@ -85,7 +85,7 @@ resyntax::RegExp parse_subexpression(const std::string& s, std::size_t start_ind
         concat_list.push_back(resyntax::RegExp(resyntax::RegExpEnum::kDot));
         break;
       default:
-        concat_list.push_back(resyntax::RegExp(resyntax::RegExpEnum::kLiteral, token));
+        concat_list.push_back(resyntax::RegExp(resyntax::RegExpEnum::kLiteral, resyntax::Literal(token)));
         break;
     }
     index = next_index;
