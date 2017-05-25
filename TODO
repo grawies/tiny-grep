@@ -16,6 +16,7 @@ https://github.com/jarro2783/cxxopts
 # Bugs
 
 # Refactoring
+Rename (non-get/set) functions from function_name to FunctionName.
 
 # Missing Basic RegEx (BRE) functionality of grep:
 Bracket expressions: basic functionality
