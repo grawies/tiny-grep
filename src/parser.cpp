@@ -97,7 +97,7 @@ resyntax::RegExp parse_subexpression(const std::string& s, std::size_t start_ind
   return join_regexes(union_list, resyntax::RegExpEnum::kUnion);
 }
 
-resyntax::RegExp parse(const std::string s) {
+resyntax::RegExp parse(const std::string& s) {
   // TODO: Validate s: check if it belongs to the grammar.
   return parse_subexpression(s, 0, s.length());
 }

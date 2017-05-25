@@ -12,14 +12,14 @@ namespace tinygrep {
 
 namespace enfa {
 
-EpsilonNFA::EpsilonNFA(resyntax::RegExp re) {
+EpsilonNFA::EpsilonNFA(const resyntax::RegExp& re) {
   state_count_ = 0;
   StatePair sp = make_enfa(re);
   start_state_ = sp.start;
   accept_state_ = sp.accept;
 }
 
-EpsilonNFA::EpsilonNFA(std::string re) : EpsilonNFA::EpsilonNFA(parse(re)) {}
+EpsilonNFA::EpsilonNFA(const std::string& re) : EpsilonNFA::EpsilonNFA(parse(re)) {}
 
 EpsilonNFA::StatePair EpsilonNFA::make_enfa(const resyntax::RegExp& re) {
   state_type new_start = increment_state(), new_accept = increment_state();

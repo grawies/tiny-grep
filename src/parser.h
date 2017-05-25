@@ -9,7 +9,7 @@
 
 namespace tinygrep {
 
-resyntax::RegExp parse(std::string s);
+resyntax::RegExp parse(const std::string& s);
 
 }  // namespace tinygrep
 
