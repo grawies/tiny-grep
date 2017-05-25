@@ -85,7 +85,8 @@ resyntax::RegExp parse_subexpression(const std::string& s, std::size_t start_ind
   std::vector<resyntax::RegExp> concat_list;
   std::size_t index = start_index;
   while (index < end_index) {
-    char token = s[index];
+    std::string symbol = GetNextSymbol(s, index);
+    char token = symbol[0];
     std::size_t next_index = index + 1;
     switch (token) {
       case '(':
