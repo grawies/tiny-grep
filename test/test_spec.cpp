@@ -44,7 +44,7 @@ class MyTestSuite : public CxxTest::TestSuite {
       os_enfa.close();
     }
 
-    void runtestcase(std::string filepath) {
+    void runtestcase(const std::string& filepath) {
       std::ifstream testcase(filepath);
       bool testcase_file_available = testcase.is_open();
       TS_ASSERT(testcase_file_available);
@@ -62,9 +62,10 @@ class MyTestSuite : public CxxTest::TestSuite {
       while (getline(testcase, search_line)) {
         bool accept_flag = search_line[0] == '+'
                         || (search_line[0] != '-' && search_line.rfind("/\\") == std::string::npos);
-        std::string fail_msg = "testcase: " + filepath + "\n"
-                             + "regexp: " + regex + "\n"
-                             + "string: \"" + search_line + "\"\n";
+        std::string fail_msg = "testcase: " + filepath + ", "
+                             + "regexp: " + regex + ", "
+                             + "string: \"" + search_line + "\", "
+                             + "accept: " + (accept_flag?"T":"F") + ".";
         TSM_ASSERT(fail_msg, enfa.accepts(search_line) == accept_flag);
       }
       testcase.close();
@@ -74,7 +75,7 @@ class MyTestSuite : public CxxTest::TestSuite {
       std::string testcase_prefix("testcase"),
                   testcase_postfix(".txt"),
                   testcase_path("test/manual-testcases/");
-      std::vector<std::string> testcase_indices = {"1","2","4","5","10","11"};
+      std::vector<std::string> testcase_indices = {"1","2","4","5","10","11","15"};
       for (std::string testcase_id : testcase_indices) {
         runtestcase(testcase_path + testcase_prefix + testcase_id + testcase_postfix);
       }
