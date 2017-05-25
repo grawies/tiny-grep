@@ -62,7 +62,10 @@ class MyTestSuite : public CxxTest::TestSuite {
       while (getline(testcase, search_line)) {
         bool accept_flag = search_line[0] == '+'
                         || (search_line[0] != '-' && search_line.rfind("/\\") == std::string::npos);
-        TS_ASSERT(enfa.accepts(search_line) == accept_flag);
+        std::string fail_msg = "testcase: " + filepath + "\n"
+                             + "regexp: " + regex + "\n"
+                             + "string: \"" + search_line + "\"\n";
+        TSM_ASSERT(fail_msg, enfa.accepts(search_line) == accept_flag);
       }
       testcase.close();
     }
