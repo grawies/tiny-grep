@@ -14,12 +14,10 @@ https://github.com/jarro2783/cxxopts
 -- TODO --
 
 # Bugs
-Parsing regexps with leading []abc] bracket expr has integer overflow in GetBrackteExpression.
 
 # Refactoring
 
 # Missing Basic RegEx (BRE) functionality of grep:
-Bracket expressions: basic functionality
 Bracket expressions: range expressions
 Bracket expression: predefined classes
 Bracket expression: negation ^
