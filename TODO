@@ -14,6 +14,7 @@ https://github.com/jarro2783/cxxopts
 -- TODO --
 
 # Bugs
+Parsing regexps with leading []abc] bracket expr has integer overflow in GetBrackteExpression.
 
 # Refactoring
 

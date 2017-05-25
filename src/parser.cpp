@@ -41,18 +41,16 @@ std::string GetNextSymbol(const std::string& s, std::size_t start_index) {
   std::string symbol = "";
   switch(letter) {
     case '{':
-      // Read >1 char.
       symbol = GetBracketExpression(s, start_index, '{','}');
       break;
     case '[':
-      // Read >1 char.
-      if (s[start_index + 1] == ']') {
-        ++start_index;
-      }
-      symbol = GetBracketExpression(s, start_index, '[',']');
+    {
+      // Ignore leading ] inside brackets.
+      std::size_t lookback = (s[start_index + 1] == ']') ? 1 : 0;
+      symbol = GetBracketExpression(s, start_index - lookback, '[',']').substr(1);
       break;
+    }
     case '\\':
-      // Read the escaped character.
       symbol = s.substr(start_index, 2);
       break;
     default:
@@ -91,7 +89,7 @@ resyntax::RegExp parse_subexpression(const std::string& s, std::size_t start_ind
   while (index < end_index) {
     std::string symbol = GetNextSymbol(s, index);
     char token = symbol[0];
-    std::size_t next_index = index + 1;
+    std::size_t next_index = index + symbol.length();
     switch (token) {
       case '(':
         next_index = find_matching_parenthesis(s, index);
@@ -116,9 +114,9 @@ resyntax::RegExp parse_subexpression(const std::string& s, std::size_t start_ind
       case '.':
         concat_list.push_back(resyntax::RegExp(resyntax::RegExpEnum::kDot));
         break;
-      case '\\': // Not implemented. Intentional fall-through.
-      case '{': // Not implemented. Intentional fall-through.
-      case '[': // Not implemented. Intentional fall-through.
+      case '{': // Unimplemented stub. Intentional reset and fall-through.
+        next_index = index + 1;
+        symbol = "{";
       default:
         concat_list.push_back(resyntax::RegExp(resyntax::RegExpEnum::kLiteral, resyntax::Literal(symbol)));
         break;
