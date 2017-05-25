@@ -13,7 +13,7 @@ Literal::Literal(const char lit) : expr_(std::string(1, lit)) {
 }
 
 bool Literal::matches(const char lit) const {
-  return expr_ == std::string(1, lit);
+  return expr_.substr(0,1) == std::string(1, lit);
 }
 
 std::string Literal::to_string() const {

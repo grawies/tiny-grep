@@ -33,7 +33,7 @@ std::size_t find_matching_parenthesis(const std::string& s, std::size_t start_in
 
 std::string GetBracketExpression(const std::string& s, const std::size_t start_index, const char open, const char close) {
   std::size_t end_index = find_matching_parenthesis(s, start_index, open, close);
-  return s.substr(start_index, end_index+1);
+  return s.substr(start_index, end_index - start_index);
 }
 
 std::string GetNextSymbol(const std::string& s, std::size_t start_index) {
@@ -46,11 +46,15 @@ std::string GetNextSymbol(const std::string& s, std::size_t start_index) {
       break;
     case '[':
       // Read >1 char.
+      if (s[start_index + 1] == ']') {
+        ++start_index;
+      }
       symbol = GetBracketExpression(s, start_index, '[',']');
       break;
     case '\\':
       // Read the escaped character.
       symbol = s.substr(start_index, 2);
+      break;
     default:
       symbol = std::string(1, letter);
       break;
@@ -112,8 +116,11 @@ resyntax::RegExp parse_subexpression(const std::string& s, std::size_t start_ind
       case '.':
         concat_list.push_back(resyntax::RegExp(resyntax::RegExpEnum::kDot));
         break;
+      case '\\': // Not implemented. Intentional fall-through.
+      case '{': // Not implemented. Intentional fall-through.
+      case '[': // Not implemented. Intentional fall-through.
       default:
-        concat_list.push_back(resyntax::RegExp(resyntax::RegExpEnum::kLiteral, resyntax::Literal(token)));
+        concat_list.push_back(resyntax::RegExp(resyntax::RegExpEnum::kLiteral, resyntax::Literal(symbol)));
         break;
     }
     index = next_index;
