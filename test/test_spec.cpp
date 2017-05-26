@@ -75,7 +75,7 @@ class MyTestSuite : public CxxTest::TestSuite {
       std::string testcase_prefix("testcase"),
                   testcase_postfix(".txt"),
                   testcase_path("test/manual-testcases/");
-      std::vector<std::string> testcase_indices = {"1","2","4","5","10","11","15"};
+      std::vector<std::string> testcase_indices = {"1","2","4","5","10","11","15","16"};
       for (std::string testcase_id : testcase_indices) {
         runtestcase(testcase_path + testcase_prefix + testcase_id + testcase_postfix);
       }
