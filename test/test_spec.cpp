@@ -25,7 +25,8 @@ class MyTestSuite : public CxxTest::TestSuite {
       if (os_regexp.is_open()) {
         os_regexp << regexp_test_graph;
       }
-      os_regexp.close(); // Generate EpsilonNFA from AST.
+      os_regexp.close();
+      // Generate EpsilonNFA from AST.
       auto enfautomaton = tinygrep::enfa::EpsilonNFA(ast);
       TS_ASSERT(enfautomaton.accepts("abbaaababc"));
       TS_ASSERT(enfautomaton.accepts("abc"));
@@ -44,7 +45,7 @@ class MyTestSuite : public CxxTest::TestSuite {
       os_enfa.close();
     }
 
-    void runtestcase(const std::string& filepath) {
+    void runtestcase(const std::string& testcase_name, const std::string& filepath) {
       std::ifstream testcase(filepath);
       bool testcase_file_available = testcase.is_open();
       TS_ASSERT(testcase_file_available);
@@ -57,6 +58,15 @@ class MyTestSuite : public CxxTest::TestSuite {
       std::string regex;
       std::getline(testcase, regex);
       tinygrep::enfa::EpsilonNFA enfa(".*(" + regex + ").*");
+
+      // Create a graph representation.
+      auto enfa_graph = enfa.to_graph();
+      std::ofstream os_enfa("build/" + testcase_name + ".gv");
+      if (os_enfa.is_open()) {
+        os_enfa << enfa_graph;
+      }
+      os_enfa.close();
+
       // Run searches.
       std::string search_line;
       while (getline(testcase, search_line)) {
@@ -77,7 +87,8 @@ class MyTestSuite : public CxxTest::TestSuite {
                   testcase_path("test/manual-testcases/");
       std::vector<std::string> testcase_indices = {"1","2","4","5","10","11","15","16"};
       for (std::string testcase_id : testcase_indices) {
-        runtestcase(testcase_path + testcase_prefix + testcase_id + testcase_postfix);
+        auto testcase_name = testcase_prefix + testcase_id;
+        runtestcase(testcase_name, testcase_path + testcase_name + testcase_postfix);
       }
     }
 
