@@ -14,6 +14,7 @@ https://github.com/jarro2783/cxxopts
 -- TODO --
 
 # Bugs
+Bracket expression [..] errenously treated as match-all dot.
 
 # Refactoring
 

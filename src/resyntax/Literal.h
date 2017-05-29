@@ -16,7 +16,7 @@ class Literal {
   explicit Literal(const std::string& expr);
   explicit Literal(const char lit);
 
-  bool matches(const char lit) const;
+  bool matches(const char lit, const size_t offset = 0) const;
   std::string to_string() const;
 
  private:

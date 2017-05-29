@@ -19,9 +19,16 @@ Literal::Literal(const char lit) : expr_(std::string(1, lit)) {
   // TODO
 }
 
-bool Literal::matches(const char lit) const {
-  for (char c : expr_) {
-    if (c == lit) {
+bool Literal::matches(const char lit, const size_t offset) const {
+  if (expr_ == "..") {
+    return true;
+  }
+  // Check for negation.
+  if (offset == 0 && expr_[0] == '^') {
+    return !matches(lit, 1);
+  }
+  for (auto cp = expr_.begin() + offset; cp != expr_.end(); ++cp) {
+    if (*cp == lit) {
       return true;
     }
   }

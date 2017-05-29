@@ -46,7 +46,11 @@ std::string GetNextSymbol(const std::string& s, std::size_t start_index) {
     case '[':
     {
       // Ignore leading ] inside brackets.
-      symbol = "[" + GetBracketExpression(s, start_index + 1, '[',']');
+      if (s[start_index + 1] == '^') {
+        symbol = "[^" + GetBracketExpression(s, start_index + 2, '[', ']');
+      } else {
+        symbol = "[" + GetBracketExpression(s, start_index + 1, '[',']');
+      }
       break;
     }
     case '\\':
