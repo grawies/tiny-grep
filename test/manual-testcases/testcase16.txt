@@ -1,14 +1,10 @@
 // Test bracket expression negations.
 \[+[^]abc]*]
  /\/\/ [a]
- /\/\/ [d]
+\      [d]
  \     [a[d]]
  /\/\/ [nomatch]
- /\/\/ ][][
- /\/\/ [[][
-  \    [perf[[ect]
- /\/\/ [\{a]]
- /\/\/ [\{q]
+  \    [perf[[ekt]
  /\/\/ to [\{c] or not to &
    \   to [\{q] or not to &
     \  noice yeh []
@@ -23,3 +19,7 @@
  /\/\/ [ a ]
     /  ][  text  ][
    /   [----]
+  /    ][][
+ /     [[][
+ /\/\/ [\{a]]
+/      [\{q]
