@@ -21,7 +21,6 @@ Bracket expression [..] errenously treated as match-all dot.
 # Missing Basic RegEx (BRE) functionality of grep:
 Bracket expressions: range expressions
 Bracket expression: predefined classes
-Bracket expression: negation ^
 Anchoring: beginning ^ meta-character
 Anchoring: ending $ meta-character
 Escaping: The \ character/ 
