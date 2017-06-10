@@ -5,7 +5,7 @@
 TEST_DIR="test/manual-testcases/"
 TEST_PREFIX="testcase"
 TEST_POSTFIX=".txt"
-TEST_COUNT=16
+TEST_COUNT=17
 APP_PATH="bin/tinygrep"
 
 echo "-- Running $TEST_COUNT testcases with tinygrep."
