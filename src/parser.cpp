@@ -36,6 +36,18 @@ std::string GetBracketExpression(const std::string& s, const std::size_t start_i
   return s.substr(start_index, end_index - start_index);
 }
 
+std::size_t FindBracketNotPrecededBy(const std::string& s, const std::size_t start_index, const char bracket, const char prefix) {
+  // scan forward until the first occurrence of bracket not preceeded by prefix
+  auto start = s.begin() + start_index;
+  for (auto it = start; it != s.end(); ++it) {
+    if (*it == bracket && *(it - 1) != prefix) {
+      return it - start;
+    }
+  }
+  throw_unsupported_grammar_exception();
+  return -1;
+}
+
 std::string GetNextSymbol(const std::string& s, std::size_t start_index) {
   char letter = s[start_index];
   std::string symbol = "";
@@ -47,9 +59,9 @@ std::string GetNextSymbol(const std::string& s, std::size_t start_index) {
     {
       // Ignore leading ] inside brackets.
       if (s[start_index + 1] == '^') {
-        symbol = "[^" + GetBracketExpression(s, start_index + 2, '[', ']');
+        symbol = "[^" + s.substr(start_index + 2, FindBracketNotPrecededBy(s,start_index + 3,']', ':') + 2);
       } else {
-        symbol = "[" + GetBracketExpression(s, start_index + 1, '[',']');
+        symbol = "[" + s.substr(start_index + 1, FindBracketNotPrecededBy(s,start_index + 2,']', ':') + 2);
       }
       break;
     }
