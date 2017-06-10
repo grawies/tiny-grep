@@ -20,7 +20,6 @@ Bracket expression [..] errenously treated as match-all dot.
 Rename (non-get/set) functions from function_name to FunctionName.
 
 # Missing Basic RegEx (BRE) functionality of grep:
-Bracket expression: predefined classes
 Anchoring: beginning ^ meta-character
 Anchoring: ending $ meta-character
 Escaping: The \ character/ 
