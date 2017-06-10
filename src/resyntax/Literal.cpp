@@ -4,39 +4,70 @@ namespace tinygrep {
 
 namespace resyntax {
 
-Literal::Literal(const std::string& expr) {
+Literal::Literal(const std::string& expr) : expr_(expr) {
   if (expr[0] == '\\') {
-    expr_ = expr.substr(1);
+    singles_ = expr.substr(1);
   } else if (expr[0] == '[' && expr[expr.length()-1] == ']') {
     // Grab the characters within the bracket expression.
-    expr_ = expr.substr(1, expr.length()-2);
+    ParseRangeExpression(expr.substr(1, expr.length()-2));
   } else {
-    expr_ = expr;
+    singles_ = expr;
   }
 }
 
-Literal::Literal(const char lit) : expr_(std::string(1, lit)) {
-  // TODO
-}
+Literal::Literal(const char lit) : Literal::Literal(std::string(1, lit)) {}
 
-bool Literal::matches(const char lit, const size_t offset) const {
+bool Literal::matches(const char lit) const {
+  bool match = false;
   if (expr_ == "..") {
-    return true;
+    match = true;
   }
-  // Check for negation.
-  if (offset == 0 && expr_[0] == '^') {
-    return !matches(lit, 1);
-  }
-  for (auto cp = expr_.begin() + offset; cp != expr_.end(); ++cp) {
+  for (auto cp = singles_.begin(); cp != singles_.end(); ++cp) {
     if (*cp == lit) {
-      return true;
+      match = true;
     }
   }
-  return false;
+  for (auto range : ranges_) {
+    if (range.start <= lit && lit <= range.end) {
+      match = true;
+    }
+  }
+  return match != negated_;
 }
 
 std::string Literal::to_string() const {
-  return expr_;
+  auto str = (negated_ ? "! " : "") + singles_;
+  for (Range range : ranges_) {
+    str += " " + std::string(1, range.start) + "-" + std::string(1, range.end);
+  }
+  return str;
+}
+
+void Literal::ParseRangeExpression(std::string expr) {
+  std::vector<char> singles_list;
+  size_type offset = 0, subexpr_length;
+  while (offset < expr.length()) {
+    subexpr_length = 1;
+    if (offset == 0 && expr[0] == '^') {
+      negated_ = true;
+    } else if ((offset == 0 || (offset == 1 && negated_)) && expr[offset] == ']') {
+      singles_list.push_back(']');
+    } else if (offset + 1 < expr.length() && expr.substr(offset, 2) == "[:") {
+      // TODO extract char class
+      subexpr_length = 0;
+    } else if (offset + 2 < expr.length() && expr[offset+1] == '-') {
+      // TODO parse range expr
+      Range range;
+      range.start = expr[offset];
+      range.end = expr[offset + 2];
+      ranges_.push_back(range);
+      subexpr_length = 3;
+    } else {
+      singles_list.push_back(expr[offset]);
+    }
+    offset += subexpr_length;
+  }
+  singles_ = std::string(singles_list.begin(), singles_list.end());
 }
 
 }  // namespace resyntax

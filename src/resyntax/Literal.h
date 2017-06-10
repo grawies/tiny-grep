@@ -11,18 +11,23 @@ namespace resyntax {
 
 class Literal {
  public:
-  typedef std::shared_ptr<Literal> SPtr;
+  typedef std::string::size_type size_type;
 
   explicit Literal(const std::string& expr);
   explicit Literal(const char lit);
 
-  bool matches(const char lit, const size_t offset = 0) const;
+  bool matches(const char lit) const;
   std::string to_string() const;
 
  private:
+  struct Range {
+    char start, end;
+  };
+  bool negated_ = false;
   std::string expr_;
-  char start_, end_;
-  std::vector<SPtr> subexpressions_;
+  std::vector<Range> ranges_;
+  std::string singles_;
+  void ParseRangeExpression(std::string expr);
 };
 
 }  // namespace resyntax
