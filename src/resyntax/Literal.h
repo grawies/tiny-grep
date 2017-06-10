@@ -26,7 +26,7 @@ class Literal {
   bool negated_ = false;
   std::string expr_;
   std::vector<Range> ranges_;
-  std::string singles_;
+  std::string singles_ = "";
   void ParseRangeExpression(std::string expr);
 };
 
