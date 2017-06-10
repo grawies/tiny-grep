@@ -19,7 +19,6 @@ Bracket expression [..] errenously treated as match-all dot.
 # Refactoring
 
 # Missing Basic RegEx (BRE) functionality of grep:
-Bracket expressions: range expressions
 Bracket expression: predefined classes
 Anchoring: beginning ^ meta-character
 Anchoring: ending $ meta-character
