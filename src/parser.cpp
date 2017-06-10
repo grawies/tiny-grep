@@ -10,18 +10,18 @@
 namespace tinygrep {
 
 void throw_unsupported_grammar_exception() {
-  throw std::domain_error("String is not in the supported grammar: unmatched parenthesis.");
+  throw std::domain_error("String is not in the supported grammar.");
 }
 
 // Find end of parenthesis subexpr in string:
 // returns index s.t. [start_index, index) includes both parentheses.
-std::size_t find_matching_parenthesis(const std::string& s, std::size_t start_index) {
+std::size_t find_matching_parenthesis(const std::string& s, std::size_t start_index, const char open = '(', const char close = ')') {
   std::size_t index = start_index + 1;
   int unmatched_left_parens = 1;
   for (auto it = s.begin() + index; it < s.end() && unmatched_left_parens > 0; ++it, ++index) {
-    if (*it == '(') {
+    if (*it == open) {
       ++unmatched_left_parens;
-    } else if (*it == ')') {
+    } else if (*it == close) {
       --unmatched_left_parens;
     }
   }
@@ -29,6 +29,50 @@ std::size_t find_matching_parenthesis(const std::string& s, std::size_t start_in
     throw_unsupported_grammar_exception();
   }
   return index;
+}
+
+std::string GetBracketExpression(const std::string& s, const std::size_t start_index, const char open, const char close) {
+  std::size_t end_index = find_matching_parenthesis(s, start_index, open, close);
+  return s.substr(start_index, end_index - start_index);
+}
+
+std::size_t FindBracketNotPrecededBy(const std::string& s, const std::size_t start_index, const char bracket, const char prefix) {
+  // scan forward until the first occurrence of bracket not preceeded by prefix
+  auto start = s.begin() + start_index;
+  for (auto it = start; it != s.end(); ++it) {
+    if (*it == bracket && *(it - 1) != prefix) {
+      return it - start;
+    }
+  }
+  throw_unsupported_grammar_exception();
+  return -1;
+}
+
+std::string GetNextSymbol(const std::string& s, std::size_t start_index) {
+  char letter = s[start_index];
+  std::string symbol = "";
+  switch(letter) {
+    case '{':
+      symbol = GetBracketExpression(s, start_index, '{','}');
+      break;
+    case '[':
+    {
+      // Ignore leading ] inside brackets.
+      if (s[start_index + 1] == '^') {
+        symbol = "[^" + s.substr(start_index + 2, FindBracketNotPrecededBy(s,start_index + 3,']', ':') + 2);
+      } else {
+        symbol = "[" + s.substr(start_index + 1, FindBracketNotPrecededBy(s,start_index + 2,']', ':') + 2);
+      }
+      break;
+    }
+    case '\\':
+      symbol = s.substr(start_index, 2);
+      break;
+    default:
+      symbol = std::string(1, letter);
+      break;
+  }
+  return symbol;
 }
 
 // Join the regexes in the list with the provided (assumed associative) operator regex.
@@ -58,8 +102,9 @@ resyntax::RegExp parse_subexpression(const std::string& s, std::size_t start_ind
   std::vector<resyntax::RegExp> concat_list;
   std::size_t index = start_index;
   while (index < end_index) {
-    char token = s[index];
-    std::size_t next_index = index + 1;
+    std::string symbol = GetNextSymbol(s, index);
+    char token = symbol[0];
+    std::size_t next_index = index + symbol.length();
     switch (token) {
       case '(':
         next_index = find_matching_parenthesis(s, index);
@@ -84,8 +129,11 @@ resyntax::RegExp parse_subexpression(const std::string& s, std::size_t start_ind
       case '.':
         concat_list.push_back(resyntax::RegExp(resyntax::RegExpEnum::kDot));
         break;
+      case '{': // Unimplemented stub. Intentional reset and fall-through.
+        next_index = index + 1;
+        symbol = "{";
       default:
-        concat_list.push_back(resyntax::RegExp(resyntax::RegExpEnum::kLiteral, token));
+        concat_list.push_back(resyntax::RegExp(resyntax::RegExpEnum::kLiteral, resyntax::Literal(symbol)));
         break;
     }
     index = next_index;

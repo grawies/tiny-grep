@@ -1,0 +1,25 @@
+// Test character classes.
+[[:alnum:]][^[:lower:]A][_[:blank:]][[:punct:]]
+ /\/\/ aa_.
+\      aB_!
+ \     0B_"
+ /\/\/ asd#
+  \    00 _
+ /\/\/ AA_%
+   \   AB ,
+    \  aB	;
+ /\/\/ AA	:
+     \ 5+_'
+      \5+ =
+ /\/\/ 5+-}
+      /55_^
+     / vC ~
+ /\/\/ vA |
+    /  +A  *
+   /   haha+ .haha
+ /\/\/ hahaa .haha
+  /    hahaB_.haha
+ /\/\/ hah@B_.haha
+ /     haha  .haha
+ /\/\/ hahaA-.HAHA
+/      hah4-_.haha

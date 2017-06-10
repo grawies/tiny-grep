@@ -1,0 +1,25 @@
+// Test bracket range expressions.
+\[+[Aa-z[-]*]
+ /\/\/ [B]
+\      [aa]
+ \     [a[d]]
+ /\/\/ [n0match]
+  \    [perf[[--ekt]
+ /\/\/ to [ZzZ] or not to &
+   \   to [zzz] or not to &
+    \  noice yeh []
+ /\/\/ [ a ]
+     \ [-] yeh noice
+      \[empty-on-purpose]
+ /\/\/ [  intentional text  ]
+      /[a[a[d[a[da[[]]
+     / []
+ /\/\/ ][
+    /  ][Anthony][
+   /   [----]
+ /\/\/ ]a[
+  /    ][][
+ /\/\/ ]d[
+ /     [[][
+ /\/\/ [\{a]]
+/      [q]

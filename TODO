@@ -14,15 +14,13 @@ https://github.com/jarro2783/cxxopts
 -- TODO --
 
 # Bugs
+Bracket expression [..] errenously treated as match-all dot.
 
 # Refactoring
 Rename (non-get/set) functions from function_name to FunctionName.
 
 # Missing Basic RegEx (BRE) functionality of grep:
-Bracket expressions: basic functionality
-Bracket expressions: range expressions
 Bracket expression: predefined classes
-Bracket expression: negation ^
 Anchoring: beginning ^ meta-character
 Anchoring: ending $ meta-character
 Escaping: The \ character/ 

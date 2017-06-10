@@ -6,7 +6,7 @@ namespace resyntax {
 
 RegExp::RegExp() : RegExp::RegExp(RegExpEnum::kEmpty) {}
 
-RegExp::RegExp(RegExpEnum type) : type_(type), r1_(nullptr), r2_(nullptr), literal_('\0') {}
+RegExp::RegExp(RegExpEnum type) : type_(type), r1_(nullptr), r2_(nullptr), literal_("xxx") {}
 
 RegExp::RegExp(RegExpEnum type, literalType literal) : RegExp::RegExp(type) {
   literal_ = literal;

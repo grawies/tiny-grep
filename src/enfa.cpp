@@ -36,7 +36,7 @@ EpsilonNFA::StatePair EpsilonNFA::make_enfa(const resyntax::RegExp& re) {
       t.target = new_accept;
       t.literal = re.getLiteral();
       if (re.getType() == resyntax::RegExpEnum::kDot) {
-        t.literal = '.';
+        t.literal = resyntax::Literal("..");
       }
       literal_transitions_[new_start].push_back(t);
       break;
@@ -116,7 +116,7 @@ bool EpsilonNFA::accepts(const std::string& s) const {
     // get whatever states they reach through current_literal transitions
     for (state_type state : current_states) {
       for (Transition transition : literal_transitions_[state]) {
-        if (transition.literal == current_literal || transition.literal == '.') {
+        if (transition.literal.matches(current_literal)) {
           next_states.insert(transition.target);
         }
       }

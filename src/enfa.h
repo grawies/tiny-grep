@@ -28,7 +28,7 @@ class EpsilonNFA {
   state_type start_state_, accept_state_;
   struct Transition {
    state_type target;
-   resyntax::RegExp::literalType literal;
+   resyntax::RegExp::literalType literal{""};
   };
   std::vector<std::vector<state_type>> epsilon_transitions_;
   std::vector<std::vector<Transition>> literal_transitions_;

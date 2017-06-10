@@ -19,7 +19,7 @@ std::string to_string(const RegExp& re) {
     case RegExpEnum::kEmpty:
       return "$\\epsilon$";
     case RegExpEnum::kLiteral:
-      return std::string(1, re.getLiteral());
+      return re.getLiteral().to_string();
     case RegExpEnum::kDot:
       return "dot";
     case RegExpEnum::kOneOrMore:

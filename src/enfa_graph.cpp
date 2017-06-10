@@ -54,7 +54,7 @@ std::string EpsilonNFA::to_graph() const {
       output << STATE_PREFIX << from
              << EDGE_ARROW
              << STATE_PREFIX << transition.target
-             << LABEL_BEGIN << transition.literal << LABEL_END
+             << LABEL_BEGIN << transition.literal.to_string() << LABEL_END
              << ENDLINE;
     }
   }

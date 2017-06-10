@@ -4,6 +4,8 @@
 #include <memory>
 #include <string>
 
+#include "Literal.h"
+
 namespace tinygrep {
 
 namespace resyntax {
@@ -21,7 +23,7 @@ enum class RegExpEnum {
 
 class RegExp {
  public:
-  typedef char                 literalType;
+  typedef Literal              literalType;
   typedef std::shared_ptr<RegExp>     SPtr;
 
   RegExp();
@@ -34,7 +36,6 @@ class RegExp {
   const RegExp& getR1() const;
   const RegExp& getR2() const;
   literalType getLiteral() const;
-
   std::string to_graph() const;
 
  private:
